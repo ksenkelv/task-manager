@@ -41,8 +41,12 @@ export const getAllTasks = async (maxHours?: number): Promise<ResponseType> => {
         const response = await fetch(`http://localhost:8080/api/v1/tasks?maxHours=${ maxHours ?? '' }`, {
             method: 'GET',
         })
-        const data = await response.json()
-        return { success: true, message: 'Success', status: 200, data }
+        if (response.status == 200) {
+            console.log('response', response)
+            const data = await response.json()
+            return { success: true, message: 'Success', status: 200, data }
+        }
+        return { success: false, message: response.statusText, status: response.status }
     } catch (e) {
         return { success: false, message: 'Request error', status: 500 }
     }
