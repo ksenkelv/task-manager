@@ -1,0 +1,23 @@
+# IntelliJ IDEA specific
+.idea/
+*.iml
+*.iws
+out/
+logs/
+target/
+node_modules/
+.yarn/
+.pnp.*
+*.log
+.vscode/
+
+# General OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependencies and build artifacts of subprojects
+task-manager-api/target/
+task-manager-api/.gradle/
+task-manager-ui/.next/
+task-manager-ui/node_modules/
+task-manager-ui/.turbo/
