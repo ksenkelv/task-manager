@@ -1,0 +1,26 @@
+
+.inputWrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.field {
+  border-radius: 6px;
+  position: relative;
+  border: 1px solid #4b4b4b;
+  width: 100%;
+  padding: 15px;
+
+  &:focus {
+    outline: none;
+    border: 2px solid #c41653;
+  }
+}
+
+.label {
+  display: flex;
+  width: 100%;
+  color: #4b4b4b;
+  padding: 0 0 5px 2px;
+}

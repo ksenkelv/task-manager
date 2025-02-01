@@ -1,0 +1,16 @@
+
+.inputContainer {
+  display: grid;
+  grid-template-columns: 100%;
+  width: 100%;
+  padding: 10px;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+
+.modalSaveButton {
+  display: flex;
+  padding-top: 20px;
+  width: 100%;
+}
+

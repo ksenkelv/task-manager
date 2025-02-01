@@ -1,0 +1,14 @@
+.filterContainer {
+  display: grid;
+  grid-template-rows: 100%;
+  width: 100%;
+  padding: 40px 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.buttonContainer {
+  width: 100%;
+  text-align: end;
+  align-content: center;
+}
