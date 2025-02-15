@@ -30,7 +30,8 @@ export default function TextFieldComponent({ value, onChange, label, placeholder
       { onlyNumber ? (
         <>
           <input disabled={ disabled }
-                 className={ styles.field }
+                 placeholder={label}
+                 className={ error ? styles.errorField : styles.field }
                  value={ value }
                  onChange={ handleInputChange }
                  inputMode="numeric"
