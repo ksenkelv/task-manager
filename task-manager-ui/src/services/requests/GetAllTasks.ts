@@ -23,7 +23,6 @@
 // }
 
 import process from "process";
-import {useEffect} from "react";
 
 type ResponseType = {
     success: boolean
@@ -35,7 +34,7 @@ type ResponseType = {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-export const getAllTasks = async (maxHours?: number): Promise<ResponseType> => {
+export const getAllTasks = async (maxHours: number | null): Promise<ResponseType> => {
 
     try {
         const response = await fetch(`http://localhost:8080/api/v1/tasks?maxHours=${ maxHours ?? '' }`, {

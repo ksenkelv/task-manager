@@ -5,10 +5,10 @@ import React, { Dispatch, SetStateAction } from "react";
 import styles from './filters.module.scss'
 
 type PropsType = {
-  title: string | undefined
-  setTitle: Dispatch<SetStateAction<string>>
-  maxHours: number | undefined
-  setHours: Dispatch<SetStateAction<undefined>>
+  title: string | null
+  setTitle: Dispatch<SetStateAction<string | null>>
+  maxHours: number | null
+  setHours: Dispatch<SetStateAction<number | null>>
   handleAddNewButtonClick: () => void
 }
 

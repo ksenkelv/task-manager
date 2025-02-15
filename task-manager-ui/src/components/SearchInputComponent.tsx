@@ -2,7 +2,7 @@ import React, { ChangeEvent, ChangeEventHandler } from 'react'
 import { TextField } from '@mui/material'
 
 type PropsType = {
-  value: string | number | undefined
+  value: string | number | null
   label: string
   onChange: ChangeEventHandler<HTMLInputElement>
   onlyNumber?: boolean
@@ -21,7 +21,7 @@ export default function SearchInputComponent({ value, label, onChange, onlyNumbe
       },
     }
 
-    onChange(modifiedEvent as ChangeEvent<HTMLInputElement>)
+    onChange(modifiedEvent)
   }
 
   return (
