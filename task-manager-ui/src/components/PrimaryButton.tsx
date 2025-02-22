@@ -17,17 +17,9 @@ type PropsType = {
 }
 
 export default function PrimaryButton({
-                                        text,
-                                        disabled,
-                                        startIcon,
-                                        contentIcon,
-                                        isRegister,
-                                        onClick,
-                                        outlined,
-                                        type,
-                                        width,
-                                        noShadow
-                                      }: PropsType) {
+  text, disabled, startIcon, contentIcon,
+  isRegister, onClick, outlined, type, width, noShadow
+}: PropsType) {
   return (
     <Button
       variant={ outlined ? 'outlined' : 'contained' }
