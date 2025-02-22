@@ -12,11 +12,8 @@ import { styled } from '@mui/material/styles'
 import { tableCellClasses } from "@mui/material"
 import Filters from "@/components/Filters";
 import CustomModal from "@/components/CustomModal";
-import TextFieldComponent from "@/components/TextFieldComponent";
-import PrimaryButton from "@/components/PrimaryButton";
-import styles from './taskTable.module.scss'
 import { save } from "@/services/requests/Save";
-
+import NewTaskForm from "@/components/NewTaskForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -105,25 +102,8 @@ export default function TasksTable() {
         </Table>
       </TableContainer>
       <CustomModal showModal={ showModal } handleCloseModal={ handleCloseModal }>
-        <div className={styles.inputContainer}>
-          <TextFieldComponent
-            value={ inputTitle }
-            onChange={ (event: any) => setInputTitle(event.target.value) }
-            // label={ 'Sisesta asukoha nimi' }
-          />
-          <TextFieldComponent
-            value={ inputHours }
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const value = event.target.value
-            setInputHours(value ? parseInt(value, 10) : 0)
-          }}
-            // label={ 'Sisesta asukoha nimi' }
-            onlyNumber={ true }
-          />
-        </div>
-        <div className={ styles.modalSaveButton }>
-          <PrimaryButton text={ 'Save' } onClick={ handleSaveButtonClick }/>
-        </div>
+        <NewTaskForm inputTitle={ inputTitle } setInputTitle={ setInputTitle } inputHours={ inputHours }
+                     setInputHours={ setInputHours } handleSaveButtonClick={ handleSaveButtonClick }/>
       </CustomModal>
     </div>
   )
