@@ -1,5 +1,4 @@
-import { ChangeEventHandler } from 'react'
-import EuroIcon from '@mui/icons-material/Euro'
+import React, { ChangeEvent, ChangeEventHandler } from 'react'
 
 import styles from './textFieldComponent.module.scss'
 
@@ -16,9 +15,9 @@ type PropsType = {
   error?: boolean
 }
 
-export default function TextFieldComponent({ value, onChange, label, placeholder, euroEnd, disabled, onlyNumber, type, required, error}: PropsType) {
+export default function TextFieldComponent({ value, onChange, label, placeholder, disabled, onlyNumber, type, required, error}: PropsType) {
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
     if (/^\d*$/.test(newValue) && onChange) {
       onChange(event)

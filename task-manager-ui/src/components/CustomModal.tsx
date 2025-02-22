@@ -1,5 +1,6 @@
 import { Box, Modal } from "@mui/material";
 import RemoveButton from '@/components/RemoveButton'
+import React, { ReactNode } from "react";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -23,7 +24,7 @@ const style = {
 type PropsType = {
   showModal: boolean
   handleCloseModal: () => void
-  children: React.ReactNode
+  children: ReactNode
   width?: string | number
   confirmation?: boolean
 }
