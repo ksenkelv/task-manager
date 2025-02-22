@@ -37,8 +37,8 @@ export default function TasksTable() {
   const [title, setTitle] = useState<string | null>(null)
   const [maxHours, setMaxHours] = useState<number | null>(null)
   const [showModal, setShowModal] = useState(false)
-  const [inputTitle, setInputTitle] = useState('')
-  const [inputHours, setInputHours] = useState(0)
+  const [inputTitle, setInputTitle] = useState<string>('')
+  const [inputHours, setInputHours] = useState<number | null>(null)
 
   const fetchTasks = async () => {
     try {
@@ -49,11 +49,11 @@ export default function TasksTable() {
     } catch (ignore) {}
   }
 
-  const saveTask = async (title: string, hours: number) => {
+  const saveTask = async (title: string, hours: number | null) => {
     try {
       const response = await save(title, hours)
       if (response?.success) {
-        fetchTasks()
+        await fetchTasks()
       }
     } catch (ignore) {}
   }

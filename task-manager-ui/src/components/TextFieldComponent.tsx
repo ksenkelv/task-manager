@@ -1,21 +1,22 @@
 import React, { ChangeEvent, ChangeEventHandler } from 'react'
-
-import styles from './textFieldComponent.module.scss'
+import {TextField, Theme} from '@mui/material'
 
 type PropsType = {
-  value: string | number | undefined
-  onChange?: ChangeEventHandler<HTMLInputElement>
-  label?: string
-  placeholder?: string
-  euroEnd?: boolean
-  disabled?: boolean
+  value: string | number | null
+  label: string
+  onChange: ChangeEventHandler<HTMLInputElement>
   onlyNumber?: boolean
-  type?: string
-  required?: boolean
-  error?: boolean
 }
 
-export default function TextFieldComponent({ value, onChange, label, placeholder, disabled, onlyNumber, type, required, error}: PropsType) {
+export default function TextFieldComponent({ value, label, onChange, onlyNumber }: PropsType) {
+
+  const textFieldStyles = {
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-focused fieldset': {
+        borderColor: (theme: Theme) => theme.palette.secondary.light,
+      },
+    }
+  }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
@@ -25,29 +26,11 @@ export default function TextFieldComponent({ value, onChange, label, placeholder
   }
 
   return (
-    <div className={ styles.inputWrapper }>
-      { onlyNumber ? (
-        <>
-          <input disabled={ disabled }
-                 placeholder={label}
-                 className={ error ? styles.errorField : styles.field }
-                 value={ value }
-                 onChange={ handleInputChange }
-                 inputMode="numeric"
-                 pattern="[0-9]*"
-          />
-        </>
-
-      ) : (
-        <input disabled={ disabled }
-               className={ disabled ? styles.deactivateField : error ? styles.errorField : styles.field }
-               value={ value }
-               onChange={ onChange }
-               type={ type || 'text' }
-               placeholder={ placeholder }
-               required={ required }
-        />
-      ) }
-    </div>
+    <TextField
+      value={ value ?? '' }
+      label={ label }
+      onChange={ onlyNumber ? handleInputChange : onChange }
+      sx={ textFieldStyles }
+    />
   )
 }
