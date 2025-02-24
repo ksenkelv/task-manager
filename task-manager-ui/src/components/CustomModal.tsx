@@ -1,5 +1,5 @@
 import { Box, Modal } from "@mui/material";
-import RemoveButton from '@/components/RemoveButton'
+import RemoveButton from '@/components/buttons/RemoveButton'
 import React, { ReactNode } from "react";
 
 const style = {
@@ -40,7 +40,7 @@ export default function CustomModal({ showModal, handleCloseModal, children, wid
         onClose={ handleCloseModal }
       >
         <Box sx={ customStyle }>
-          { !confirmation && <div style={{ paddingBottom: '10px' }}><RemoveButton onClick={ handleCloseModal }/></div> }
+          { !confirmation && <div style={{ paddingBottom: '10px', textAlign: 'end'}}><RemoveButton onClick={ handleCloseModal }/></div> }
           { children }
         </Box>
       </Modal>
