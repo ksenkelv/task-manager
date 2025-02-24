@@ -1,6 +1,6 @@
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import React, {Dispatch, SetStateAction} from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styles from './filters.module.scss'
 import TextFieldComponent from "@/components/TextFieldComponent";
 
@@ -18,8 +18,8 @@ export default function Filters({ title, setTitle, maxHours, setHours, handleAdd
       <TextFieldComponent value={ title } onChange={(event: any) => setTitle(event.target.value)} label={'Search by title'}/>
       <TextFieldComponent value={ maxHours } onChange={(event: any) => setHours(event.target.value)} label={'Filter by hours'} onlyNumber={true}/>
       <div className={styles.buttonContainer}>
-        <Fab size="medium" color="secondary" aria-label="add">
-          <AddIcon onClick={ handleAddNewButtonClick }/>
+        <Fab size="medium" color="secondary" aria-label="add" onClick={ handleAddNewButtonClick }>
+          <AddIcon/>
         </Fab>
       </div>
     </div>
