@@ -3,3 +3,8 @@ export type TaskType = {
     title: string
     estimatedHours: number
 }
+
+export type TaskFieldsType = {
+    title: boolean,
+    estimatedHours: boolean,
+}

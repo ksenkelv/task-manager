@@ -1,14 +1,16 @@
 import React, { ChangeEvent, ChangeEventHandler } from 'react'
-import {TextField, Theme} from '@mui/material'
+import { TextField, Theme } from '@mui/material'
 
 type PropsType = {
   value: string | number | null
   label: string
   onChange: ChangeEventHandler<HTMLInputElement>
   onlyNumber?: boolean
+  required?: boolean
+  error?: boolean
 }
 
-export default function TextFieldComponent({ value, label, onChange, onlyNumber }: PropsType) {
+export default function TextFieldComponent({ value, label, onChange, onlyNumber, required, error }: PropsType) {
 
   const textFieldStyles = {
     '& .MuiOutlinedInput-root': {
@@ -30,7 +32,9 @@ export default function TextFieldComponent({ value, label, onChange, onlyNumber 
       value={ value ?? '' }
       label={ label }
       onChange={ onlyNumber ? handleInputChange : onChange }
+      required={ required }
       sx={ textFieldStyles }
+      error={ error }
     />
   )
 }

@@ -40,6 +40,11 @@ export default function TasksTable() {
   const [inputTitle, setInputTitle] = useState<string>('')
   const [inputHours, setInputHours] = useState<number | null>(null)
 
+  const [fieldErrors, setFieldErrors] = useState<TaskFieldsType>({
+    title: false,
+    estimatedHours: false,
+  })
+
   const fetchTasks = async () => {
     try {
       const response = await getAllTasks(maxHours)
@@ -49,7 +54,7 @@ export default function TasksTable() {
     } catch (ignore) {}
   }
 
-  const saveTask = async (title: string, hours: number | null) => {
+  const saveTask = async (title: string, hours: number) => {
     try {
       const response = await save(title, hours)
       if (response?.success) {
@@ -59,18 +64,29 @@ export default function TasksTable() {
   }
 
   const handleAddNewButtonClick = () => {
+    setFieldErrors({ title: false, estimatedHours: false })
     setShowModal(true)
   }
 
   const handleSaveButtonClick = async () => {
-    await saveTask(inputTitle.trim(), inputHours)
-    setShowModal(false)
-    setInputTitle('')
+    if (inputTitle && inputHours) {
+      await saveTask(inputTitle.trim(), inputHours)
+      setShowModal(false)
+      setInputTitle('')
+      setInputHours(null)
+    }
+
+    const newFieldErrors = {
+      title: !title,
+      estimatedHours: !maxHours,
+    }
+    setFieldErrors(newFieldErrors)
   }
 
   const handleCloseModal = () => {
     setShowModal(false)
     setInputTitle('')
+    setInputHours(null)
   }
 
   useEffect(() => {
@@ -90,21 +106,23 @@ export default function TasksTable() {
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            { tasks && tasks.map((task) => (
-              <StyledTableRow key={ task.id }>
-                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.id }</StyledTableCell>
-                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.title }</StyledTableCell>
-                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.estimatedHours }</StyledTableCell>
-              </StyledTableRow>
-            )) }
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <CustomModal showModal={ showModal } handleCloseModal={ handleCloseModal }>
-        <NewTaskForm inputTitle={ inputTitle } setInputTitle={ setInputTitle } inputHours={ inputHours }
-                     setInputHours={ setInputHours } handleSaveButtonClick={ handleSaveButtonClick }/>
-      </CustomModal>
-    </div>
+            <TableBody>
+              { tasks && tasks.map((task) => (
+                <StyledTableRow key={ task.id }>
+                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.id }</StyledTableCell>
+                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.title }</StyledTableCell>
+                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.estimatedHours }</StyledTableCell>
+                </StyledTableRow>
+              )) }
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <CustomModal showModal={ showModal } handleCloseModal={ handleCloseModal }>
+          <NewTaskForm inputTitle={ inputTitle } setInputTitle={ setInputTitle } inputHours={ inputHours }
+                       setInputHours={ setInputHours } handleSaveButtonClick={ handleSaveButtonClick }
+                       fieldErrors={ fieldErrors }/>
+        </CustomModal>
+      </div>
+    </>
   )
 }

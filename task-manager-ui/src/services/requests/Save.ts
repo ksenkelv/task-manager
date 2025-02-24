@@ -7,7 +7,7 @@ type ResponseType = {
   code?: string
 }
 
-export const save = async (title: string | null, estimatedHours: number | null): Promise<ResponseType> => {
+export const save = async (title: string, estimatedHours: number): Promise<ResponseType> => {
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/tasks`, {
