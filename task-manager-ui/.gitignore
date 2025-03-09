@@ -66,3 +66,4 @@ out/
 
 # Next.js output
 .vercel/
+/package-lock.json

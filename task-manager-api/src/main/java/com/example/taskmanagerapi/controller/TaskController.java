@@ -48,4 +48,9 @@ public class TaskController {
         return listOfTaskDto;
     }
 
+    @GetMapping("/tasks/{id}/hours")
+    public Integer getById(@PathVariable Integer id) {
+        return taskService.getEstimatedHoursById(id);
+    }
+
 }
