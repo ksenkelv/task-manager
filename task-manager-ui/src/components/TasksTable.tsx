@@ -7,15 +7,15 @@ import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import { getAllTasks } from "@/services/requests/GetAllTasks"
-import { TaskFieldsType, TaskType } from "@/types/TaskTypes"
+import { TaskType } from "@/types/TaskTypes"
 import { styled } from '@mui/material/styles'
 import { tableCellClasses } from "@mui/material"
 import Filters from "@/components/Filters";
 import CustomModal from "@/components/CustomModal";
-import { save } from "@/services/requests/Save";
 import NewTaskForm from "@/components/NewTaskForm";
-import AlertComponent from "@/components/alert/AlertComponent";
-import { AlertType } from "@/types/AlertTypes";
+import styles from "@/components/tasksTable.module.scss";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,18 +36,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function TasksTable() {
 
   const [tasks, setTasks] = useState<TaskType[]>([])
-  const [alert, setAlert] = useState<AlertType>()
-
   const [title, setTitle] = useState<string | null>(null)
   const [maxHours, setMaxHours] = useState<number | null>(null)
   const [showModal, setShowModal] = useState(false)
-  const [inputTitle, setInputTitle] = useState<string>('')
-  const [inputHours, setInputHours] = useState<number | null>(null)
-
-  const [fieldErrors, setFieldErrors] = useState<TaskFieldsType>({
-    title: false,
-    estimatedHours: false,
-  })
 
   const fetchTasks = async () => {
     try {
@@ -58,50 +49,14 @@ export default function TasksTable() {
     } catch (ignore) {}
   }
 
-  const saveTask = async (title: string, hours: number, setAlert: (alert: AlertType) => void) => {
-    try {
-      const response = await save(title, hours)
-
-      if (response.success) {
-        await fetchTasks()
-        setAlert({ open: true, severity: 'success', msg: 'Task created successfully.' })
-        return
-      } else if (!response) {
-        setAlert({ open: true, severity: 'error', msg: 'Failed to create task.' })
-        return
-      } else if (response.status === 400) {
-        setAlert({ open: true, severity: 'error', msg: 'Failed to create task. The data is not valid.' })
-        return
-      }
-    } catch (e) {
-      return { success: false, message: 'Request error', status: 500 }
-    }
-  }
-
   const handleAddNewButtonClick = () => {
-    setFieldErrors({ title: false, estimatedHours: false })
+    // setFieldErrors({ title: false, estimatedHours: false })
     setShowModal(true)
-  }
-
-  const handleSaveButtonClick = async () => {
-    if (inputTitle && inputHours) {
-      await saveTask(inputTitle.trim(), inputHours, setAlert)
-      setShowModal(false)
-      setInputTitle('')
-      setInputHours(null)
-    }
-
-    const newFieldErrors = {
-      title: !title,
-      estimatedHours: !maxHours,
-    }
-    setFieldErrors(newFieldErrors)
   }
 
   const handleCloseModal = () => {
     setShowModal(false)
-    setInputTitle('')
-    setInputHours(null)
+    fetchTasks()
   }
 
   useEffect(() => {
@@ -109,39 +64,39 @@ export default function TasksTable() {
   }, [maxHours])
 
   return (
-    <>
-      { alert && alert.open && <AlertComponent open={ alert.open } severity={ alert.severity } msg={ alert.msg }
-                                               autoHideDuration={ alert.autoHideDuration } setAlert={ setAlert }/> }
-      <div>
-        <Filters title={ title } setTitle={ setTitle } maxHours={ maxHours } setHours={ setMaxHours }
-                 handleAddNewButtonClick={ handleAddNewButtonClick }/>
-        <TableContainer>
-          <Table sx={ { minWidth: 700 } } aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Id</StyledTableCell>
-                <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Title</StyledTableCell>
-                <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Hours</StyledTableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              { tasks && tasks.map((task) => (
-                <StyledTableRow key={ task.id }>
-                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.id }</StyledTableCell>
-                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.title }</StyledTableCell>
-                  <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.estimatedHours }</StyledTableCell>
-                </StyledTableRow>
-              )) }
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <CustomModal showModal={ showModal } handleCloseModal={ handleCloseModal }>
-          <NewTaskForm inputTitle={ inputTitle } setInputTitle={ setInputTitle } inputHours={ inputHours }
-                       setInputHours={ setInputHours } handleSaveButtonClick={ handleSaveButtonClick }
-                       fieldErrors={ fieldErrors }/>
-        </CustomModal>
+    <div>
+      <div className={ styles.topContainer }>
+        <Filters title={ title } setTitle={ setTitle } maxHours={ maxHours } setHours={ setMaxHours }/>
+        <div className={ styles.buttonContainer }>
+          <Fab size="medium" color="secondary" aria-label="add" onClick={ handleAddNewButtonClick }>
+            <AddIcon/>
+          </Fab>
+        </div>
       </div>
-    </>
+      <TableContainer>
+        <Table sx={ { minWidth: 700 } } aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Id</StyledTableCell>
+              <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Title</StyledTableCell>
+              <StyledTableCell sx={ { padding: '15px 25px', fontWeight: '700' } }>Hours</StyledTableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            { tasks && tasks.map((task) => (
+              <StyledTableRow key={ task.id }>
+                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.id }</StyledTableCell>
+                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.title }</StyledTableCell>
+                <StyledTableCell sx={ { padding: '15px 25px' } }>{ task.estimatedHours }</StyledTableCell>
+              </StyledTableRow>
+            )) }
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <CustomModal showModal={ showModal } handleCloseModal={ handleCloseModal }>
+        <NewTaskForm handleCloseModal={ handleCloseModal }/>
+      </CustomModal>
+    </div>
   )
 }

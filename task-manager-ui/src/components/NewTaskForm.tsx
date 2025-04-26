@@ -1,29 +1,66 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
+import React, { ChangeEvent, useState } from "react";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import styles from './newTaskForm.module.scss'
 import TextFieldComponent from "./TextFieldComponent";
 import { TaskFieldsType } from "@/types/TaskTypes";
+import { AlertType } from "@/types/AlertTypes";
+import { save } from "@/services/requests/Save";
+import AlertComponent from "@/components/alert/AlertComponent";
 
 type PropsType = {
-  inputTitle: string
-  setInputTitle: Dispatch<SetStateAction<string>>
-  inputHours: number | null
-  setInputHours: Dispatch<SetStateAction<number | null>>
-  handleSaveButtonClick: () => void
-  fieldErrors?: TaskFieldsType
+  handleCloseModal: () => void
 }
 
-export default function NewTaskForm({
-  inputTitle,
-  setInputTitle,
-  inputHours,
-  setInputHours,
-  handleSaveButtonClick,
-  fieldErrors,
-}: PropsType) {
+export default function NewTaskForm({ handleCloseModal }: PropsType) {
+
+  const [alert, setAlert] = useState<AlertType>()
+  const [inputTitle, setInputTitle] = useState<string>('')
+  const [inputHours, setInputHours] = useState<number | null>(null)
+
+  const [fieldErrors, setFieldErrors] = useState<TaskFieldsType>({
+    title: false,
+    estimatedHours: false,
+  })
+
+  const saveTask = async (title: string, hours: number, setAlert: (alert: AlertType) => void) => {
+    try {
+      const response = await save(title, hours)
+
+      if (response.success) {
+        setAlert({ open: true, severity: 'success', msg: 'Task created successfully.' })
+        return
+      } else if (!response) {
+        setAlert({ open: true, severity: 'error', msg: 'Failed to create task.' })
+        return
+      } else if (response.status === 400) {
+        setAlert({ open: true, severity: 'error', msg: 'Failed to create task. The data is not valid.' })
+        return
+      }
+    } catch (e) {
+      return { success: false, message: 'Request error', status: 500 }
+    }
+  }
+
+  const handleSaveButtonClick = async () => {
+    if (inputTitle && inputHours) {
+      await saveTask(inputTitle.trim(), inputHours, setAlert)
+      handleCloseModal()
+      setInputTitle('')
+      setInputHours(null)
+    }
+
+    const newFieldErrors = {
+      title: !inputTitle,
+      estimatedHours: !inputHours,
+    }
+    setFieldErrors(newFieldErrors)
+  }
+
 
   return (
     <>
+      { alert && alert.open && <AlertComponent open={ alert.open } severity={ alert.severity } msg={ alert.msg }
+                                               autoHideDuration={ alert.autoHideDuration } setAlert={ setAlert }/> }
       <div className={ styles.inputContainer }>
         <TextFieldComponent
           value={ inputTitle }
