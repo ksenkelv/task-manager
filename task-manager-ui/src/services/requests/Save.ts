@@ -7,10 +7,12 @@ type ResponseType = {
   code?: string
 }
 
+const backendUrl = process.env.NEXT_PUBLIC_API_URL
+
 export const save = async (title: string, estimatedHours: number): Promise<ResponseType> => {
 
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/tasks`, {
+    const response = await fetch(`${backendUrl}/tasks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

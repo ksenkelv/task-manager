@@ -22,8 +22,6 @@
 //     headers: { Authorization: 'Bearer ' + localStorage.getItem('TOKEN') }
 // }
 
-import process from "process";
-
 type ResponseType = {
     success: boolean
     message: string
@@ -32,12 +30,12 @@ type ResponseType = {
     code?: string
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const backendUrl = process.env.NEXT_PUBLIC_API_URL
 
 export const getAllTasks = async (maxHours: number | null): Promise<ResponseType> => {
 
     try {
-        const response = await fetch(`http://localhost:8080/api/v1/tasks?maxHours=${ maxHours ?? '' }`, {
+        const response = await fetch(`${backendUrl}/tasks?maxHours=${ maxHours ?? '' }`, {
             method: 'GET',
         })
         if (response.status == 200) {
