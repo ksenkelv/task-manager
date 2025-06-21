@@ -2,11 +2,9 @@ package com.example.taskmanagerapi.controller;
 
 import com.example.taskmanagerapi.controller.mapper.TaskDtoModelMapper;
 import com.example.taskmanagerapi.dto.TaskDto;
-import com.example.taskmanagerapi.entity.TaskEntity;
 import com.example.taskmanagerapi.model.TaskModel;
 import com.example.taskmanagerapi.repository.TaskRepository;
 import com.example.taskmanagerapi.service.TaskService;
-import com.example.taskmanagerapi.service.TaskServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,9 +38,11 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<TaskDto> getAll(@RequestParam(value = "maxHours", required = false) Integer maxHours) {
+    public List<TaskDto> getAll(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "maxHours", required = false) Integer maxHours) {
 
-        List<TaskModel> listOfTaskModel = taskService.getAll(maxHours);
+        List<TaskModel> listOfTaskModel = taskService.getAll(title, maxHours);
         List<TaskDto> listOfTaskDto = listOfTaskModel.stream().map(model -> mapper.mapToDto(model)).toList();
 
         return listOfTaskDto;

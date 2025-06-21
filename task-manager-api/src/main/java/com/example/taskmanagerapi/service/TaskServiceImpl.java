@@ -28,12 +28,16 @@ public class TaskServiceImpl implements TaskService {
         return savedTaskModel;
     }
 
-    public List<TaskModel> getAll(Integer maxHours) {
+    public List<TaskModel> getAll(String title, Integer maxHours) {
 
         Stream<TaskEntity> streamOfTaskEntity = taskRepository.findAll().stream();
 
         if (maxHours != null) {
             streamOfTaskEntity = streamOfTaskEntity.filter(entity -> entity.getEstimatedHours() <= maxHours);
+        }
+
+        if (title != null && !title.isEmpty()) {
+            streamOfTaskEntity = streamOfTaskEntity.filter(entity -> entity.getTitle().toLowerCase().contains(title.toLowerCase()));
         }
 
         return streamOfTaskEntity.map(mapper::mapToModel).toList();

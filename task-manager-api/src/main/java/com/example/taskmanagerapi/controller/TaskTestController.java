@@ -59,7 +59,7 @@ public class TaskTestController {
 
         // доставание всех тасков из базы
         // System.out.println(taskRepository.findAll());
-        for (TaskModel task : taskService.getAll(null)) {
+        for (TaskModel task : taskService.getAll("", null)) {
             System.out.println(task.getId());
             System.out.println(task.getTitle());
             System.out.println(task.getEstimatedHours());
