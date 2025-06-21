@@ -32,10 +32,17 @@ type ResponseType = {
 
 const backendUrl = process.env.NEXT_PUBLIC_API_URL
 
-export const getAllTasks = async (maxHours: number | null): Promise<ResponseType> => {
+
+
+export const getAllTasks = async (title: string | null, maxHours: number | null): Promise<ResponseType> => {
+
+    const params = new URLSearchParams({
+        title: title ?? '',
+        maxHours: maxHours?.toString() ?? ''
+    })
 
     try {
-        const response = await fetch(`${backendUrl}/tasks?maxHours=${ maxHours ?? '' }`, {
+        const response = await fetch(`${backendUrl}/tasks?${params.toString()}`, {
             method: 'GET',
         })
         if (response.status == 200) {

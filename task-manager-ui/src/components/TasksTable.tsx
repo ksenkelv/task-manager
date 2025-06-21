@@ -42,7 +42,7 @@ export default function TasksTable() {
 
   const fetchTasks = async () => {
     try {
-      const response = await getAllTasks(maxHours)
+      const response = await getAllTasks(title, maxHours)
       if (response?.success) {
         setTasks(response.data)
       }
@@ -61,7 +61,7 @@ export default function TasksTable() {
 
   useEffect(() => {
     fetchTasks()
-  }, [maxHours])
+  }, [title, maxHours])
 
   return (
     <div>
