@@ -8,5 +8,5 @@ public interface TaskService {
 
     TaskModel save(TaskModel taskModel);
 
-    List<TaskModel> getAll(String title, Integer maxHours);
+    List<TaskModel> getAll(String searchPhrases, Integer maxHours);
 }

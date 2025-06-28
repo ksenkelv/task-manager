@@ -39,10 +39,10 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public List<TaskDto> getAll(
-            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "title", required = false) String searchPhrases,
             @RequestParam(value = "maxHours", required = false) Integer maxHours) {
 
-        List<TaskModel> listOfTaskModel = taskService.getAll(title, maxHours);
+        List<TaskModel> listOfTaskModel = taskService.getAll(searchPhrases, maxHours);
         List<TaskDto> listOfTaskDto = listOfTaskModel.stream().map(model -> mapper.mapToDto(model)).toList();
 
         return listOfTaskDto;
