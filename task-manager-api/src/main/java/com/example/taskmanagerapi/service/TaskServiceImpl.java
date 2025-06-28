@@ -6,14 +6,15 @@ import com.example.taskmanagerapi.repository.TaskRepository;
 import com.example.taskmanagerapi.service.mapper.TaskModelEntityMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private TaskRepository taskRepository;
-    private TaskModelEntityMapper mapper;
+    private final TaskRepository taskRepository;
+    private final TaskModelEntityMapper mapper;
 
     public TaskServiceImpl(TaskRepository taskRepository, TaskModelEntityMapper mapper) {
         this.taskRepository = taskRepository;
@@ -28,12 +29,17 @@ public class TaskServiceImpl implements TaskService {
         return savedTaskModel;
     }
 
-    public List<TaskModel> getAll(Integer maxHours) {
+    public List<TaskModel> getAll(String searchPhrases, Integer maxHours) {
 
         Stream<TaskEntity> streamOfTaskEntity = taskRepository.findAll().stream();
 
         if (maxHours != null) {
             streamOfTaskEntity = streamOfTaskEntity.filter(entity -> entity.getEstimatedHours() <= maxHours);
+        }
+
+        if (searchPhrases != null && !searchPhrases.isEmpty()) {
+            List<String> listOfSearchPhrases = Arrays.stream(searchPhrases.split(";")).map(String::toLowerCase).toList();
+            streamOfTaskEntity = streamOfTaskEntity.filter(entity -> listOfSearchPhrases.stream().allMatch(phrase -> entity.getTitle().toLowerCase().contains(phrase)));
         }
 
         return streamOfTaskEntity.map(mapper::mapToModel).toList();
