@@ -31,11 +31,9 @@ public class TaskServiceImpl implements TaskService {
 
     public List<TaskModel> getAll(String searchPhrases, Integer maxHours) {
 
-        Stream<TaskEntity> streamOfTaskEntity = taskRepository.findAll().stream();
-
-        if (maxHours != null) {
-            streamOfTaskEntity = streamOfTaskEntity.filter(entity -> entity.getEstimatedHours() <= maxHours);
-        }
+        Stream<TaskEntity> streamOfTaskEntity = maxHours != null
+                ? taskRepository.findByEstimatedHoursBefore(maxHours).stream()
+                : taskRepository.findAll().stream();
 
         if (searchPhrases != null && !searchPhrases.isEmpty()) {
             List<String> listOfSearchPhrases = Arrays.stream(searchPhrases.split(";")).map(String::toLowerCase).toList();
